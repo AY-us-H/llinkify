@@ -1,0 +1,14 @@
+{
+    "host": "https://api.europe-west2.gcp.tinybird.co",
+    "id": "5685c8bb-a5b8-4981-87b0-ce8fdff4dfd4",
+    "name": "Linki",
+    "scope": "user",
+    "token": "p.eyJ1IjogIjU2ODVjOGJiLWE1YjgtNDk4MS04N2IwLWNlOGZkZmY0ZGZkNCIsICJpZCI6ICI5YTZkMzAyMy1kMjNmLTQ3MmMtYjhhZi0wZTc2MDQ5MTlkODQiLCAiaG9zdCI6ICJnY3AtZXVyb3BlLXdlc3QyIn0.JFNzDcfmhWEuN0aD7RpC_1Voktw9v-i0-fPDbayvyPg",
+    "tokens": {
+        "https://api.europe-west2.gcp.tinybird.co": "p.eyJ1IjogIjU2ODVjOGJiLWE1YjgtNDk4MS04N2IwLWNlOGZkZmY0ZGZkNCIsICJpZCI6ICI5YTZkMzAyMy1kMjNmLTQ3MmMtYjhhZi0wZTc2MDQ5MTlkODQiLCAiaG9zdCI6ICJnY3AtZXVyb3BlLXdlc3QyIn0.JFNzDcfmhWEuN0aD7RpC_1Voktw9v-i0-fPDbayvyPg"
+    },
+    "user_email": "ays11ksyp@gmail.com",
+    "user_id": "07de5518-3522-4fff-9734-08a3cb16bc1c",
+    "user_token": "p.eyJ1IjogIjA3ZGU1NTE4LTM1MjItNGZmZi05NzM0LTA4YTNjYjE2YmMxYyIsICJpZCI6ICJmZmMzZmRhYi0yZjQ4LTQwMWYtODk3Ni00MGUxNDg3OGFiNDAiLCAiaG9zdCI6ICJnY3AtZXVyb3BlLXdlc3QyIn0.Tmddpq4PTXhTrVjksve1yqTVRqqHkiBfWRIZw1nWgU0",
+    "version": "0.0.1.dev247"
+}

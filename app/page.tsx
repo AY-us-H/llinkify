@@ -1,7 +1,9 @@
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
+import { auth } from "@clerk/nextjs/server";
 import { ArrowRight, BarChart3, Palette, Shield, Smartphone, Users, Zap, Star, CheckCircle } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 const features = [
   {
@@ -57,7 +59,12 @@ const testimonials = [
   }
 ]
 
-export default function Home() {
+export default async function Home() {
+
+  const { userId } = await auth();
+  if(userId){
+    redirect("/dashboard");
+  }
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <Header isFixed={true}/>

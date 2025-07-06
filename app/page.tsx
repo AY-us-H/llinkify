@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BarChart3, Palette, Shield, Smartphone, Users, Zap, Star, CheckCircle } from "lucide-react";
 import Link from "next/link";
@@ -59,6 +60,7 @@ const testimonials = [
 export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      <Header isFixed={true}/>
       {/* creating Hero section */}
       <section className="px-4 py-20 lg:px-8 lg:py-32">
         <div className="mx-auto max-w-7xl">

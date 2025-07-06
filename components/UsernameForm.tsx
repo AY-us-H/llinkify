@@ -127,12 +127,27 @@ function UsernameForm() {
                     {availabilityCheck?.error} || "Username is already taken"
                   </p>
                 )}
-              
+
                 <FormMessage /> {/* Responsible for showing any error message in the form */}
+
               </FormItem>
             )}
           />
-
+              <Button
+              type="submit"
+              className="text-white w-full bg-purple-600 hover:bg-purple-700 disabled:opacity-50"
+              disabled={isSubmitDisabled}
+              >
+                  {
+                    form.formState.isSubmitting ? (
+                        <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin"/>
+                        </>
+                    ):(
+                      "Update Username"
+                    )
+                  }
+              </Button>
         </form>
       </Form>
 

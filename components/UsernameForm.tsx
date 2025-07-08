@@ -18,6 +18,8 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { AlertCircle, CheckCircle, Loader2, User } from "lucide-react";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 const formSchema = z.object({
   username: z
@@ -41,6 +43,16 @@ function UsernameForm() {
     },
   });
 
+  const currentSlug = useQuery(
+    api.lib.usernames.getUserSlug,
+    user.user?.id ? {userId: user.user.id} : "skip"
+  );
+
+  const availabilityCheck = useQuery(
+    api.lib.usernames.checkUsernameAvailability,
+    DebouncedUsername.length>=3 ? {username: DebouncedUsername} : "skip"
+  );
+
   const watchedUsername = form.watch("username");
 
   // debounce username input for availability checking
@@ -51,9 +63,40 @@ function UsernameForm() {
     return () => clearTimeout(timer); //cleanup function to clear timer
   }, [watchedUsername])
 
+  // Determining the status of the username input"
+  // -Returns null if username is empty or too short.
+  // -Returns "checking" if usernmae is being debounced or availability is being checked.
+  // -Returns "current" if username matches the user's current slug.
+  // -Returns "available" or "unavailable" based on availability check result.
+  const getStatus = () => {
+    if(!DebouncedUsername || DebouncedUsername.length < 3) return null;
+    if(DebouncedUsername != watchedUsername) return "checking";
+    if(!availabilityCheck) return "checking";
+    if(DebouncedUsername == currentSlug) return "current";
+    return availabilityCheck.available ? "available" : "unavailable"
+  }
+
+  const status = getStatus();
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     // handle form submission, e.g., send to server or update state
-    console.log(values);
+    if (!user.user?.id) return;
+
+    try {
+      console.log("Submitted form", values);
+      // const result = await setDebouncedUsername({ username: values.username });
+      // if(result.success){
+      //   form.reset();
+      // }else{
+      //   form.setError("username",{ message:result.error });
+      // }
+    } catch {
+      form.setError("username", {
+        message: "Failed to update username. Please try again."
+      });
+
+    }
+
   }
 
   return (
@@ -133,21 +176,21 @@ function UsernameForm() {
               </FormItem>
             )}
           />
-              <Button
-              type="submit"
-              className="text-white w-full bg-purple-600 hover:bg-purple-700 disabled:opacity-50"
-              disabled={isSubmitDisabled}
-              >
-                  {
-                    form.formState.isSubmitting ? (
-                        <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin"/>
-                        </>
-                    ):(
-                      "Update Username"
-                    )
-                  }
-              </Button>
+          <Button
+            type="submit"
+            className="text-white w-full bg-purple-600 hover:bg-purple-700 disabled:opacity-50"
+            disabled={isSubmitDisabled}
+          >
+            {
+              form.formState.isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                </>
+              ) : (
+                "Update Username"
+              )
+            }
+          </Button>
         </form>
       </Form>
 

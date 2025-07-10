@@ -45,7 +45,7 @@ function UsernameForm() {
 
   const currentSlug = useQuery(
     api.lib.usernames.getUserSlug,
-    user.user?.id ? {userId: user.user.id} : "skip"
+    user?.id ? {userId: user.id} : "skip"
   );
 
   const availabilityCheck = useQuery(
@@ -78,9 +78,14 @@ function UsernameForm() {
 
   const status = getStatus();
 
+  const hasCustomUsername = currentSlug && currentSlug != user?.id;
+
+  const isSubmitDisabled = status !== "available" || form.formState.isSubmitting;
+
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     // handle form submission, e.g., send to server or update state
-    if (!user.user?.id) return;
+    if (!user?.id) return;
 
     try {
       console.log("Submitted form", values);

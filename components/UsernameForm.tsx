@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { AlertCircle, CheckCircle, Loader2, User } from "lucide-react";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
 const formSchema = z.object({
@@ -43,16 +43,6 @@ function UsernameForm() {
     },
   });
 
-  const currentSlug = useQuery(
-    api.lib.usernames.getUserSlug,
-    user?.id ? {userId: user.id} : "skip"
-  );
-
-  const availabilityCheck = useQuery(
-    api.lib.usernames.checkUsernameAvailability,
-    DebouncedUsername.length>=3 ? {username: DebouncedUsername} : "skip"
-  );
-
   const watchedUsername = form.watch("username");
 
   // debounce username input for availability checking
@@ -63,16 +53,28 @@ function UsernameForm() {
     return () => clearTimeout(timer); //cleanup function to clear timer
   }, [watchedUsername])
 
+  const currentSlug = useQuery(
+    api.lib.usernames.getUserSlug,
+    user?.id ? { userId: user.id } : "skip"
+  );
+
+  const availabilityCheck = useQuery(
+    api.lib.usernames.checkUsernameAvailability,
+    DebouncedUsername.length >= 3 ? { username: DebouncedUsername } : "skip"
+  );
+
+  const setUsername = useMutation(api.lib.usernames.setUsername);
+
   // Determining the status of the username input"
   // -Returns null if username is empty or too short.
   // -Returns "checking" if usernmae is being debounced or availability is being checked.
   // -Returns "current" if username matches the user's current slug.
   // -Returns "available" or "unavailable" based on availability check result.
   const getStatus = () => {
-    if(!DebouncedUsername || DebouncedUsername.length < 3) return null;
-    if(DebouncedUsername != watchedUsername) return "checking";
-    if(!availabilityCheck) return "checking";
-    if(DebouncedUsername == currentSlug) return "current";
+    if (!DebouncedUsername || DebouncedUsername.length < 3) return null;
+    if (DebouncedUsername != watchedUsername) return "checking";
+    if (!availabilityCheck) return "checking";
+    if (DebouncedUsername == currentSlug) return "current";
     return availabilityCheck.available ? "available" : "unavailable"
   }
 
@@ -83,18 +85,18 @@ function UsernameForm() {
   const isSubmitDisabled = status !== "available" || form.formState.isSubmitting;
 
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // handle form submission, e.g., send to server or update state
     if (!user?.id) return;
 
     try {
       console.log("Submitted form", values);
-      // const result = await setDebouncedUsername({ username: values.username });
-      // if(result.success){
-      //   form.reset();
-      // }else{
-      //   form.setError("username",{ message:result.error });
-      // }
+      const result = await setUsername({ username: values.username });
+      if(result.success){
+        form.reset();
+      }else{
+        form.setError("username",{ message:result.error });
+      }
     } catch {
       form.setError("username", {
         message: "Failed to update username. Please try again."

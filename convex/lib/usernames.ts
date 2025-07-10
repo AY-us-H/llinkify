@@ -18,6 +18,7 @@ export const getUserSlug = query({
     }
 });
 
+// Check for username availability
 export const checkUsernameAvailability = query({
     args: { username: v.string() },
     returns: v.object({ available: v.boolean(), error: v.optional(v.string()) }),

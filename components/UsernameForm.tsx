@@ -17,9 +17,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { AlertCircle, CheckCircle, Loader2, User } from "lucide-react";
+import { AlertCircle, CheckCircle, ExternalLink, Loader2, User } from "lucide-react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import Link from "next/link";
 
 const formSchema = z.object({
   username: z
@@ -92,10 +93,10 @@ function UsernameForm() {
     try {
       console.log("Submitted form", values);
       const result = await setUsername({ username: values.username });
-      if(result.success){
+      if (result.success) {
         form.reset();
-      }else{
-        form.setError("username",{ message:result.error });
+      } else {
+        form.setError("username", { message: result.error });
       }
     } catch {
       form.setError("username", {
@@ -118,6 +119,31 @@ function UsernameForm() {
       </div>
 
       {/* Current username status */}
+      {hasCustomUsername && (
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <User className="w-4 h-4 text-green-600"/>
+              <span className="text-sm font-medium text-green-900">
+                Current Username
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-green-800 bg-white px-2 py-1 rounded text-sm">
+                {currentSlug}
+              </span>
+              <Link
+              href={`/u/${currentSlug}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-600 hover:text-green-700 transition-colors"
+              >
+                <ExternalLink className="w-4 h-4"/>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* URL preview */}
 

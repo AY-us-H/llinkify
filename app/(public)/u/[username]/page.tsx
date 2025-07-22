@@ -1,3 +1,4 @@
+import PublicPageContent from "@/components/PublicPageContent";
 import { api } from "@/convex/_generated/api";
 import {preloadQuery} from "convex/nextjs"
 
@@ -18,7 +19,13 @@ async function PublicLinkInBioPage({
         }),
     ]);
 
-    return <div>PublicLinkInBioPage: {username}</div>
+    return (
+        <PublicPageContent
+        username={username}
+        preloadedLinks= {preloadedLinks}
+        preloadedCustomizations={preloadedCustomizations}
+        />
+    )
 }
   
 export default PublicLinkInBioPage

@@ -10,6 +10,15 @@ export default defineSchema({
     .index("by_user_id", ["userId"])
     .index("by_username", ["username"]),
 
+    links: defineTable({
+      userId: v.string(), //cleark userId
+      title: v.string(), // display name of the link
+      url: v.string(), // destination url
+      order: v.number(), // sort order
+    })
+    .index("by_user", ["userId"])
+    .index("by_user_and_order",["userId", "order"]),
+
     userCustomizations: defineTable({
       userId: v.string(), //clerk user id
       profilePictureStorageId: v.optional(v.id("_storage")), //convex storage id for profile picture

@@ -13,6 +13,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as lib_getBaseUrl from "../lib/getBaseUrl.js";
 import type * as lib_usernames from "../lib/usernames.js";
 import type * as myFunctions from "../myFunctions.js";
 
@@ -25,6 +26,7 @@ import type * as myFunctions from "../myFunctions.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  "lib/getBaseUrl": typeof lib_getBaseUrl;
   "lib/usernames": typeof lib_usernames;
   myFunctions: typeof myFunctions;
 }>;

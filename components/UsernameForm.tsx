@@ -17,10 +17,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { AlertCircle, CheckCircle, ExternalLink, Loader2, User } from "lucide-react";
+import { AlertCircle, CheckCircle, Copy, ExternalLink, Loader2, User } from "lucide-react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import Link from "next/link";
+import { getBaseUrl } from "@/convex/lib/getBaseUrl";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   username: z
@@ -123,7 +125,7 @@ function UsernameForm() {
         <div className="bg-green-50 border border-green-200 rounded-lg p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <User className="w-4 h-4 text-green-600"/>
+              <User className="w-4 h-4 text-green-600" />
               <span className="text-sm font-medium text-green-900">
                 Current Username
               </span>
@@ -133,12 +135,12 @@ function UsernameForm() {
                 {currentSlug}
               </span>
               <Link
-              href={`/u/${currentSlug}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-green-600 hover:text-green-700 transition-colors"
+                href={`/u/${currentSlug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-green-600 hover:text-green-700 transition-colors"
               >
-                <ExternalLink className="w-4 h-4"/>
+                <ExternalLink className="w-4 h-4" />
               </Link>
             </div>
           </div>
@@ -146,6 +148,35 @@ function UsernameForm() {
       )}
 
       {/* URL preview */}
+      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+        <div className="flex items-center gap-2 mb-2">
+          {/* A small bullet point */}
+          <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
+          <span className="text-sm font-medium text-gray-700">
+            Your link preview
+          </span>
+        </div>
+        <div className="flex items-center">
+          <Link
+            href={`/u/${currentSlug}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 font-mono text-gray-800 bg-white px-3 py-2 rounded-l border-l border-y hover:bg-gray-50 transition-colors truncate"
+          >
+            {getBaseUrl()}/u/{currentSlug}
+          </Link>
+          <button
+          onClick={()=>{
+            navigator.clipboard.writeText(`${getBaseUrl()}/u/${currentSlug}`);
+            toast.success("Copied to clipboard");
+          }}
+          className="flex items-center justify-center w-10 h-10 bg-white border rounded-r hover:bg-gray-50 transition-colors"
+          title="Copy to clipboard"
+          >
+            <Copy className="w-4 h-4 text-gray-500"/>
+          </button>
+        </div>
+      </div>
 
       {/* Form */}
       <Form {...form}>

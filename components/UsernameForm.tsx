@@ -33,7 +33,7 @@ const formSchema = z.object({
 })
 
 function UsernameForm() {
-  const user = useUser();
+  const { user } = useUser();
   const [DebouncedUsername, setDebouncedUsername] = useState("");
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -55,7 +55,7 @@ function UsernameForm() {
 
   const currentSlug = useQuery(
     api.lib.usernames.getUserSlug,
-    user?.id ? { userId: user.id } : "skip"
+    user ? { userId: user.id } : "skip"
   );
 
   const availabilityCheck = useQuery(
@@ -80,14 +80,14 @@ function UsernameForm() {
 
   const status = getStatus();
 
-  const hasCustomUsername = currentSlug && currentSlug != user?.id;
+  const hasCustomUsername = currentSlug && user && currentSlug != user?.id;
 
   const isSubmitDisabled = status !== "available" || form.formState.isSubmitting;
 
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // handle form submission, e.g., send to server or update state
-    if (!user?.id) return;
+    if (!user) return;
 
     try {
       console.log("Submitted form", values);
@@ -137,7 +137,7 @@ function UsernameForm() {
                   <div className="relative">
                     <Input
                       placeholder="enter your desired username"
-                      {...form}
+                      {...field}
                       className="pr-10"
                     />
                     <div className="absolute right-3 top-1/2 transform -translate-y-1/2">

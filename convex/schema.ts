@@ -4,7 +4,8 @@ import { v } from "convex/values";
 export default defineSchema({
     usernames: defineTable({
       userId: v.string(), // cleark userid
-      username: v.string(), // custom username (it must be unique)
+      username: v.string(),
+      value: v.number(), // custom username (it must be unique)
     })
     .index("by_user_id", ["userId"])
     .index("by_username", ["username"]),

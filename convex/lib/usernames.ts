@@ -102,6 +102,7 @@ export const setUsername = mutation({
             await db.insert("usernames", { 
                 userId: identity.subject,
                 username: args.username,
+                value: 0,
              });
         }
 

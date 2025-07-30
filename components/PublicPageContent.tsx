@@ -6,6 +6,7 @@ import { Preloaded, usePreloadedQuery } from "convex/react";
 import { User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import Links from "./Links";
 
 interface PublicPageContentProps {
     username: string;

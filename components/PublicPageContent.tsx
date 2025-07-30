@@ -1,9 +1,11 @@
 'use client'
 
 import { api } from "@/convex/_generated/api";
+import { getBaseUrl } from "@/convex/lib/getBaseUrl";
 import { Preloaded, usePreloadedQuery } from "convex/react";
 import { User } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface PublicPageContentProps {
     username: string;
@@ -40,16 +42,17 @@ function PublicPageContent({
                                     {customizations?.profilePictureUrl ? (
                                         <div className="w-24 h-24 rounded-full overflow-hidden shadow-lg bg-white p-1">
                                             <Image
-                                            src={customizations.profilePictureUrl}
-                                            alt={`${username}'s profile`}
-                                            width={88}
-                                            height={88}
-                                            className="w-full h-full object-contain rounded-full"
+                                                src={customizations.profilePictureUrl}
+                                                alt={`${username}'s profile`}
+                                                width={88}
+                                                height={88}
+                                                className="w-full h-full object-contain rounded-full"
                                             />
                                         </div>
-                                    ):(
+                                    ) : (
+                                        // Placeholder image if the profile picture is not present
                                         <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-lg">
-                                            <User className="w-12 h-12 text-gray-600"/>
+                                            <User className="w-12 h-12 text-gray-600" />
                                         </div>
                                     )}
                                 </div>
@@ -72,17 +75,20 @@ function PublicPageContent({
                     {/* Right Column - Links */}
                     <div className="flex-1 min-w-0">
                         <div className="bg-white/90 backdrop-blur-xl border border-white/20 rounded-3xl p-8 lg:p-10 shadow-xl">
-                        {/* <Links preloadedLinks={preloadedLinks}/> */}
+                            <Links preloadedLinks={preloadedLinks}/>
                         </div>
                     </div>
                 </div>
 
                 {/* Footer */}
                 <div className="mt-16 pt-8 border-t border-gray-200/50 text-center">
-                <p className="text-gray-600 text-sm">
-                    Powered by{" "}
-                    
-                </p>
+                    <p className="text-gray-600 text-sm">
+                        Powered by{" "}
+                        <Link href={getBaseUrl() + "/"}
+                            className="text-gray-600 text-sm"
+                            style={{ color: accentColor }}
+                        >Linkify</Link>
+                    </p>
                 </div>
             </div>
         </div>
